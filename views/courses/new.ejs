@@ -1,0 +1,42 @@
+<!-- views/users/new.ejs -->
+
+<!--
+  Listing 19.1 (p. 277)
+  사용자 생성 구축
+-->
+
+<main class="">
+  <div class="container col-xl-10 col-xxl-8 px-4 py-5">
+    <div class="pt-5">
+      <h1>Add New Course</h1>
+      <p>What will you teach today?</p>
+
+      <div class="row">
+        <div class="col-lg-6 mb-3 mt-3">
+          <div class="data-form">
+            <form class="form-signin" action="/courses/create" method="POST">
+              <h2 class="form-signin-heading">Create a new course:</h2>
+              <label for="inputTitle">Title</label>
+              <input type="text" name="title" id="inputTitle" class="form-control" placeholder="Title" autofocus>
+              <label for="inputDescription">Description</label>
+              <input type="text" name="description" id="inputDescription" class="form-control" placeholder="Description">
+              <label for="inputMaxStudents">Max Students</label>
+              <input type="text" name="maxStudents" id="inputMaxStudents" pattern="\d*" class="form-control" placeholder="Max Students" required>
+              <label for="inputCost">Cost</label>
+              <input type="text" name="cost" id="inputCost" pattern="\d*" class="form-control" placeholder="Cost" required>
+              <br /><button class="btn btn-lg ut-red" type="submit">Create Course</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="col-lg-6 text-center text-lg-start mb-3 mt-5">
+          <figure>
+            <img
+              src="https://cdn.pixabay.com/photo/2018/03/01/07/22/education-3189934_960_720.jpg"
+            />
+          </figure>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
