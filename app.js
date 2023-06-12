@@ -14,11 +14,9 @@ const express = require("express"), // express를 요청
 
 // controllers 폴더의 파일을 요청
 const pagesController = require("./controllers/pagesController"),
-  subscribersController = require("./controllers/subscribersController"),
   usersController = require("./controllers/usersController"),
-  coursesController = require("./controllers/coursesController"),
-  talksController = require("./controllers/talksController"),
-  trainsController = require("./controllers/trainsController"),
+  discussionsController = require("./controllers/discussionsController"),
+  commentsController = require("./controllers/commentsController"),
   errorController = require("./controllers/errorController");
 
 const router = express.Router(); // Express 라우터를 인스턴스화
@@ -106,7 +104,7 @@ router.use((req, res, next) => {
 
 // 애플리케이션에 Mongoose 설정
 const mongoose = require("mongoose"), // mongoose를 요청
-  dbName = "aaronkr";
+  dbName = "ut-nodejs";
 
 // 데이터베이스 연결 설정
 mongoose.connect(`mongodb://127.0.0.1:27017/${dbName}`, {
@@ -195,106 +193,58 @@ router.delete(
 );
 
 /**
- * Subscribers
+ * Discussions
  */
 router.get(
-  "/subscribers",
-  subscribersController.index,
-  subscribersController.indexView
+  "/discussions",
+  discussionsController.index,
+  discussionsController.indexView
 ); // index 라우트 생성
-router.get("/subscribers/new", subscribersController.new); // 생성 폼을 보기 위한 요청 처리
+router.get("/discussions/new", discussionsController.new); // 생성 폼을 보기 위한 요청 처리
 router.post(
-  "/subscribers/create",
-  subscribersController.create,
-  subscribersController.redirectView
+  "/discussions/create",
+  discussionsController.create,
+  discussionsController.redirectView
 ); // 생성 폼에서 받아온 데이터의 처리와 결과를 사용자 보기 페이지에 보여주기
 router.get(
-  "/subscribers/:id",
-  subscribersController.show,
-  subscribersController.showView
+  "/discussions/:id",
+  discussionsController.show,
+  discussionsController.showView
 );
-router.get("/subscribers/:id/edit", subscribersController.edit); // viewing을 처리하기 위한 라우트 추가
+router.get("/discussions/:id/edit", discussionsController.edit); // viewing을 처리하기 위한 라우트 추가
 router.put(
-  "/subscribers/:id/update",
-  subscribersController.update,
-  subscribersController.redirectView
+  "/discussions/:id/update",
+  discussionsController.update,
+  discussionsController.redirectView
 ); // 편집 폼에서 받아온 데이터의 처리와 결과를 사용자 보기 페이지에 보여주기
 router.delete(
-  "/subscribers/:id/delete",
-  subscribersController.delete,
-  subscribersController.redirectView
+  "/discussions/:id/delete",
+  discussionsController.delete,
+  discussionsController.redirectView
 );
 
-/**
- * Courses
- */
-router.get("/courses", coursesController.index, coursesController.indexView); // index 라우트 생성
-router.get("/courses/new", coursesController.new); // 생성 폼을 보기 위한 요청 처리
-router.post(
-  "/courses/create",
-  coursesController.create,
-  coursesController.redirectView
-); // 생성 폼에서 받아온 데이터의 처리와 결과를 사용자 보기 페이지에 보여주기
-router.get("/courses/:id", coursesController.show, coursesController.showView);
-router.get("/courses/:id/edit", coursesController.edit); // viewing을 처리하기 위한 라우트 추가
-router.put(
-  "/courses/:id/update",
-  coursesController.update,
-  coursesController.redirectView
-); // 편집 폼에서 받아온 데이터의 처리와 결과를 사용자 보기 페이지에 보여주기
-router.delete(
-  "/courses/:id/delete",
-  coursesController.delete,
-  coursesController.redirectView
-);
-
-/**
- * Talks
- */
-// router.get("/talks", talksController.index, talksController.indexView); // 모든 토크를 위한 라우트 추가
-// router.get("/talk/:id", talksController.show, talksController.showView); // 특정 토크를 위한 라우트 추가
-router.get("/talks", talksController.index, talksController.indexView); // index 라우트 생성
-router.get("/talks/new", talksController.new); // 생성 폼을 보기 위한 요청 처리
-router.post(
-  "/talks/create",
-  talksController.create,
-  talksController.redirectView
-); // 생성 폼에서 받아온 데이터의 처리와 결과를 사용자 보기 페이지에 보여주기
-router.get("/talks/:id", talksController.show, talksController.showView);
-router.get("/talks/:id/edit", talksController.edit); // viewing을 처리하기 위한 라우트 추가
-router.put(
-  "/talks/:id/update",
-  talksController.update,
-  talksController.redirectView
-); // 편집 폼에서 받아온 데이터의 처리와 결과를 사용자 보기 페이지에 보여주기
-router.delete(
-  "/talks/:id/delete",
-  talksController.delete,
-  talksController.redirectView
-);
-
-/**
- * Trains
- */
-router.get("/trains", trainsController.index, trainsController.indexView); // index 라우트 생성
-router.get("/trains/new", trainsController.new); // 생성 폼을 보기 위한 요청 처리
-router.post(
-  "/trains/create",
-  trainsController.create,
-  trainsController.redirectView
-); // 생성 폼에서 받아온 데이터의 처리와 결과를 사용자 보기 페이지에 보여주기
-router.get("/trains/:id", trainsController.show, trainsController.showView);
-router.get("/trains/:id/edit", trainsController.edit); // viewing을 처리하기 위한 라우트 추가
-router.put(
-  "/trains/:id/update",
-  trainsController.update,
-  trainsController.redirectView
-); // 편집 폼에서 받아온 데이터의 처리와 결과를 사용자 보기 페이지에 보여주기
-router.delete(
-  "/trains/:id/delete",
-  trainsController.delete,
-  trainsController.redirectView
-);
+// /**
+//  * Courses
+//  */
+// router.get("/courses", coursesController.index, coursesController.indexView); // index 라우트 생성
+// router.get("/courses/new", coursesController.new); // 생성 폼을 보기 위한 요청 처리
+// router.post(
+//   "/courses/create",
+//   coursesController.create,
+//   coursesController.redirectView
+// ); // 생성 폼에서 받아온 데이터의 처리와 결과를 사용자 보기 페이지에 보여주기
+// router.get("/courses/:id", coursesController.show, coursesController.showView);
+// router.get("/courses/:id/edit", coursesController.edit); // viewing을 처리하기 위한 라우트 추가
+// router.put(
+//   "/courses/:id/update",
+//   coursesController.update,
+//   coursesController.redirectView
+// ); // 편집 폼에서 받아온 데이터의 처리와 결과를 사용자 보기 페이지에 보여주기
+// router.delete(
+//   "/courses/:id/delete",
+//   coursesController.delete,
+//   coursesController.redirectView
+// );
 
 /**
  * =====================================================================

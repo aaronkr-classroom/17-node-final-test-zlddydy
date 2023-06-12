@@ -1,26 +1,26 @@
-// controllers/talksController.js
+// controllers/commentsController.js
 "use strict";
 
-const Talk = require("../models/Talk"); // 사용자 모델 요청
+const Comment = require("../models/Comment"); // 사용자 모델 요청
 
 module.exports = {
   index: (req, res, next) => {
-    Talk.find() // index 액션에서만 퀴리 실행
-      .then((talks) => {
+    Comment.find() // index 액션에서만 퀴리 실행
+      .then((comments) => {
         // 사용자 배열로 index 페이지 렌더링
-        res.locals.talks = talks; // 응답상에서 사용자 데이터를 저장하고 다음 미들웨어 함수 호출
+        res.locals.comments = comments; // 응답상에서 사용자 데이터를 저장하고 다음 미들웨어 함수 호출
         next();
       })
       .catch((error) => {
         // 로그 메시지를 출력하고 홈페이지로 리디렉션
-        console.log(`Error fetching talks: ${error.message}`);
+        console.log(`Error fetching comments: ${error.message}`);
         next(error); // 에러를 캐치하고 다음 미들웨어로 전달
       });
   },
   indexView: (req, res) => {
-    res.render("talks/index", {
-      page: "talks",
-      title: "All Talks",
+    res.render("comments/index", {
+      page: "comments",
+      title: "All Comments",
     }); // 분리된 액션으로 뷰 렌더링
   },
 
@@ -36,15 +36,15 @@ module.exports = {
    */
   // 폼의 렌더링을 위한 새로운 액션 추가
   new: (req, res) => {
-    res.render("talks/new", {
-      page: "new-talk",
-      title: "New Talk",
+    res.render("comments/new", {
+      page: "new-comment",
+      title: "New Comment",
     });
   },
 
   // 사용자를 데이터베이스에 저장하기 위한 create 액션 추가
   create: (req, res, next) => {
-    let talkParams = {
+    let commentParams = {
       name: {
         first: req.body.first,
         last: req.body.last,
@@ -55,14 +55,14 @@ module.exports = {
       profileImg: req.body.profileImg,
     };
     // 폼 파라미터로 사용자 생성
-    Talk.create(talkParams)
-      .then((talk) => {
-        res.locals.redirect = "/talks";
-        res.locals.talk = talk;
+    Comment.create(commentParams)
+      .then((comment) => {
+        res.locals.redirect = "/comments";
+        res.locals.comment = comment;
         next();
       })
       .catch((error) => {
-        console.log(`Error saving talk: ${error.message}`);
+        console.log(`Error saving comment: ${error.message}`);
         next(error);
       });
   },
@@ -85,23 +85,23 @@ module.exports = {
    * userController.js에서 특정 사용자에 대한 show 액션 추가
    */
   show: (req, res, next) => {
-    let talkId = req.params.id; // request params로부터 사용자 ID 수집
-    Talk.findById(talkId) // ID로 사용자 찾기
-      .then((talk) => {
-        res.locals.talk = talk; // 응답 객체를 통해 다음 믿들웨어 함수로 사용자 전달
+    let commentId = req.params.id; // request params로부터 사용자 ID 수집
+    Comment.findById(commentId) // ID로 사용자 찾기
+      .then((comment) => {
+        res.locals.comment = comment; // 응답 객체를 통해 다음 믿들웨어 함수로 사용자 전달
         next();
       })
       .catch((error) => {
-        console.log(`Error fetching talk by ID: ${error.message}`);
+        console.log(`Error fetching comment by ID: ${error.message}`);
         next(error); // 에러를 로깅하고 다음 함수로 전달
       });
   },
 
   // show 뷰의 렌더링
   showView: (req, res) => {
-    res.render("talks/show", {
-      page: "talk-details",
-      title: "Talk Details",
+    res.render("comments/show", {
+      page: "comment-details",
+      title: "Comment Details",
     });
   },
 
@@ -111,23 +111,23 @@ module.exports = {
    */
   // edit 액션 추가
   edit: (req, res, next) => {
-    let talkId = req.params.id;
-    Talk.findById(talkId) // ID로 데이터베이스에서 사용자를 찾기 위한 findById 사용
-      .then((talk) => {
-        res.render("talks/edit", {
-          talk: talk,
+    let commentId = req.params.id;
+    Comment.findById(commentId) // ID로 데이터베이스에서 사용자를 찾기 위한 findById 사용
+      .then((comment) => {
+        res.render("comments/edit", {
+          comment: comment,
         }); // 데이터베이스에서 내 특정 사용자를 위한 편집 페이지 렌더링
       })
       .catch((error) => {
-        console.log(`Error fetching talk by ID: ${error.message}`);
+        console.log(`Error fetching comment by ID: ${error.message}`);
         next(error);
       });
   },
 
   // update 액션 추가
   update: (req, res, next) => {
-    let talkId = req.params.id,
-      talkParams = {
+    let commentId = req.params.id,
+      commentParams = {
         name: {
           first: req.body.first,
           last: req.body.last,
@@ -138,16 +138,16 @@ module.exports = {
         profileImg: req.body.profileImg,
       }; // 요청으로부터 사용자 파라미터 취득
 
-    Talk.findByIdAndUpdate(talkId, {
-      $set: talkParams,
+    Comment.findByIdAndUpdate(commentId, {
+      $set: commentParams,
     }) //ID로 사용자를 찾아 단일 명령으로 레코드를 수정하기 위한 findByIdAndUpdate의 사용
-      .then((talk) => {
-        res.locals.redirect = `/talks/${talkId}`;
-        res.locals.talk = talk;
+      .then((comment) => {
+        res.locals.redirect = `/comments/${commentId}`;
+        res.locals.comment = comment;
         next(); // 지역 변수로서 응답하기 위해 사용자를 추가하고 다음 미들웨어 함수 호출
       })
       .catch((error) => {
-        console.log(`Error updating talk by ID: ${error.message}`);
+        console.log(`Error updating comment by ID: ${error.message}`);
         next(error);
       });
   },
@@ -157,14 +157,14 @@ module.exports = {
    * delete 액션의 추가
    */
   delete: (req, res, next) => {
-    let talkId = req.params.id;
-    Talk.findByIdAndRemove(talkId) // findByIdAndRemove 메소드를 이용한 사용자 삭제
+    let commentId = req.params.id;
+    Comment.findByIdAndRemove(commentId) // findByIdAndRemove 메소드를 이용한 사용자 삭제
       .then(() => {
-        res.locals.redirect = "/talks";
+        res.locals.redirect = "/comments";
         next();
       })
       .catch((error) => {
-        console.log(`Error deleting talk by ID: ${error.message}`);
+        console.log(`Error deleting comment by ID: ${error.message}`);
         next();
       });
   },

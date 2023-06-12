@@ -17,7 +17,7 @@ const passportLocalMongoose = require("passport-local-mongoose"); // passport-lo
 const mongoose = require("mongoose"),
   { Schema } = mongoose,
   bcrypt = require("bcrypt"), // Lesson 23 - bcrypt 라이브러리를 요청
-  Subscriber = require("./Subscriber"), // Lesson 23 - Subscriber 모델을 요청
+  // Subscriber = require("./Subscriber"), // Lesson 23 - Subscriber 모델을 요청
   userSchema = Schema(
     // 사용자 스키마 생성
     {
@@ -54,11 +54,6 @@ const mongoose = require("mongoose"),
       phoneNumber: {
         type: String,
         trim: true,
-      },
-      courses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }], // 사용자와 강좌를 연결 시켜주기 위한 강좌 속성 추가
-      subscribedAccount: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Subscriber", // subscribedAccount를 사용자와 구독자를 연결하기 위해 추가
       },
       profileImg: {
         type: String,
@@ -103,22 +98,22 @@ userSchema.pre("save", function (next) {
    * Listing 19.4 (p. 281)
    * user.js에 pre("save") 훅 추가
    */
-  if (user.subscribedAccount === undefined) {
-    // 기존 Subscriber 연결을 위한 조건 체크 추가
-    Subscriber.findOne({
-      email: user.email,
-    }) // Single Subscriber를 위한 퀴리
-      .then((subscriber) => {
-        user.subscribedAccount = subscriber; // 사용자와 구독자 계정 연결
-        next();
-      })
-      .catch((error) => {
-        console.log(`Error in connecting subscriber: ${error.message}`);
-        next(error); // 에러 발생 시 다음 미들웨어로 함수로 전달
-      });
-  } else {
-    next(); // 이미 연결 존재 시 다음 미들웨어로 함수 호출
-  }
+  // if (user.subscribedAccount === undefined) {
+  //   // 기존 Subscriber 연결을 위한 조건 체크 추가
+  //   Subscriber.findOne({
+  //     email: user.email,
+  //   }) // Single Subscriber를 위한 퀴리
+  //     .then((subscriber) => {
+  //       user.subscribedAccount = subscriber; // 사용자와 구독자 계정 연결
+  //       next();
+  //     })
+  //     .catch((error) => {
+  //       console.log(`Error in connecting subscriber: ${error.message}`);
+  //       next(error); // 에러 발생 시 다음 미들웨어로 함수로 전달
+  //     });
+  // } else {
+  //   next(); // 이미 연결 존재 시 다음 미들웨어로 함수 호출
+  // }
 });
 
 module.exports = mongoose.model("User", userSchema);
