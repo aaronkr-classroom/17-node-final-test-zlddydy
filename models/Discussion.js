@@ -19,6 +19,8 @@ const mongoose = require("mongoose"),
       },
       author: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
       comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
+      category: { type: String },
+      tags: [String],
     },
     {
       timestamps: true,

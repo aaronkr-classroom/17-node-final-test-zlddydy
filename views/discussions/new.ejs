@@ -9,13 +9,12 @@
   <div class="container col-xl-10 col-xxl-8 px-4 py-5">
     <div class="pt-5">
       <h1>Add New Discussion</h1>
-      <p>What will you teach today?</p>
+      <p>Ask questions, post advice, leave feedback.</p>
 
       <div class="row">
         <div class="col-lg-6 mb-3 mt-3">
           <div class="data-form">
             <form class="form" action="/discussions/create" method="POST">
-              <h2 class="form-signin-heading">Create a new discussion:</h2>
               <label for="inputTitle">Title</label>
               <input
                 type="text"
@@ -34,6 +33,14 @@
                 placeholder="Write your discussion topic here..."
                 rows="8"
               ></textarea>
+              <label for="inputTags">Tags</label>
+              <input
+                type="text"
+                name="tags"
+                id="inputTags"
+                class="form-control"
+                placeholder="Add a list of tags separated by commas."
+              />
               <br /><button class="btn btn-lg ut-red" type="submit">
                 Create Discussion
               </button>

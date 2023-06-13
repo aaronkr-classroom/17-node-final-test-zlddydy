@@ -86,11 +86,6 @@ passport.deserializeUser(User.deserializeUser()); // User 모델의 역직렬화
 router.use((req, res, next) => {
   // 응답 객체상에서 플래시 메시지의 로컬 flashMessages로의 할당
   res.locals.flashMessages = req.flash(); // flash 메시지를 뷰에서 사용할 수 있도록 설정
-
-  /**
-   * Listing 24.7 (p. 358)
-   * 사용자 정의 미들웨어로 로컬 변수 추가
-   */
   res.locals.loggedIn = req.isAuthenticated(); // 로그인 여부를 확인하는 불리언 값을 로컬 변수에 추가
   res.locals.currentUser = req.user; // 현재 사용자를 로컬 변수에 추가
   next();
@@ -148,11 +143,9 @@ router.use(expressValidator());
  */
 router.get("/", pagesController.showHome); // 홈 페이지 위한 라우트 추가
 router.get("/about", pagesController.showAbout); // 코스 페이지 위한 라우트 추가
-router.get("/transportation", pagesController.showTransportation); // 교통수단 페이지 위한 라우트 추가
 
 /**
- * Listing 23.2 (p. 335)
- * app.js로 로그인 라우트를 추가
+ * Login/Logout
  */
 router.get("/users/login", usersController.login); // 로그인 폼을 보기 위한 요청 처리
 router.post(
@@ -160,8 +153,6 @@ router.post(
   usersController.authenticate,
   usersController.redirectView
 ); // 로그인 폼에서 받아온 데이터의 처리와 결과를 사용자 보기 페이지에 보여주기
-
-// Listing 24.7 후에 (p. 358)
 router.get(
   "/users/logout",
   usersController.logout,

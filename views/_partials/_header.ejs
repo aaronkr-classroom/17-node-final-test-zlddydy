@@ -26,10 +26,7 @@
           <%= currentUser.username %>
         </a>
         <a class="btn ut-red" href="/users/logout">Logout</a>
-        <% } else { %>
-        <a class="btn btn-outline-secondary" href="/users/login">Login</a>
-        <a class="btn ut-red" href="/users/new">Register</a>
-        <% } %>
+        <% } else { %> <%- include('_loginButtons.ejs') %> <% } %>
       </div>
     </div>
   </div>

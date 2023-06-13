@@ -1,12 +1,10 @@
 <!-- views/users/show.ejs -->
-
-<!--
-  Listing 19.5 (p. 283)
-  사용자 Show 테이블
--->
 <main class="user-profile">
   <div class="container col-xl-10 col-xxl-8 px-4 py-5">
     <div class="pt-5">
+      <header class="border-0 pb-3">
+        <a href="/users" class="btn btn-outline-secondary">← Back to Users</a>
+      </header>
       <h1>User Data for <%= user.fullName %></h1>
 
       <div class="row">
@@ -32,62 +30,36 @@
                 <th scope="col">Email</th>
                 <td><%= user.email %></td>
               </tr>
+              <% if (loggedIn) { %>
               <tr>
                 <th scope="col">Password</th>
                 <td><%= user.password %></td>
               </tr>
-              <tr>
-                <th scope="col">Courses</th>
-                <td><%= user.courses %></td>
-              </tr>
-              <tr>
-                <th scope="col">Subscribed Account</th>
-                <td><%= user.subscribedAccount %></td>
-              </tr>
-              <tr>
+              <% } %>
+              <!-- <tr>
+                <th scope="col">Discussions</th>
+                <td><%= //user.discussions.length %></td>
+              </tr> -->
+              <!-- <tr>
                 <th scope="col">Created</th>
-                <td><%= user.createdAt %></td>
+                <td><%= //user.createdAt %></td>
               </tr>
               <tr>
                 <th scope="col">Updated</th>
-                <td><%= user.updatedAt %></td>
-              </tr>
-              <tr>
-                <th scope="col">ID</th>
-                <td><%= user._id %></td>
-              </tr>
+                <td><%= //user.updatedAt %></td>
+              </tr> -->
             </tbody>
           </table>
         </div>
       </div>
 
-      <!-- 구독자 계정 확인 -->
-      <% if (user.subscribedAccount) { %>
-      <h4 class="mt-5 text-center">
-        This user has a subscribed account:
-        <a href="/subscribers/<%= user.subscribedAccount %>">
-          <%= user.subscribedAccount.name %> </a
-        >.
-      </h4>
-      <% } %>
-
-      <!--
-        노트: 링크된 구독자 페이지가 제대로 동작하려면 이런 과정을 구독자를 위한 CRUD 함수 및
-        뷰의 생성에서도 동시에 따라야 할 것이다. Href 앵커 태그인 /subscribers/${user.susbcribedAccount}는
-        구독자의 show 페이지를 나타낸다.
-      -->
-
-      <!--
-        Listing 20.10 (p. 299)
-        CRUD 액션을 위한 링크 추가
-      -->
-      <div class="row">
-        <div class="col col-lg-10 offset-lg-2">
+      <footer class="row">
+        <div class="col text-center">
           <!-- 프로필 페이지에서 사용자 계정의 편집 및 삭제를 위한 링크 추가 -->
-          <a href="/users" class="btn btn-primary">← Back to Users</a>
+          <% if (loggedIn) { %>
           <a
             href="/users/<%= user._id %>/edit"
-            class="btn btn-secondary"
+            class="btn btn-primary"
             role="button"
             >✏️ Edit User</a
           >
@@ -98,8 +70,9 @@
             role="button"
             >🗑️ Delete User</a
           >
+          <% } %>
         </div>
-      </div>
+      </footer>
     </div>
   </div>
 </main>
