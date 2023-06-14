@@ -32,14 +32,13 @@
       Listing 22.4 (p. 329)
       layout.ejs에서 플래시 메시지 추가
     -->
-    <%- include('_partials/_flashMsg') %>
-    <%- body %> 
-    <%- include('_partials/_footer') %>
+    <%- include('_partials/_flashMsg') %> <%- body %> <%-
+    include('_partials/_footer') %>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="/js/jquery-3.7.0.slim.js"></script>
-    
+
     <!-- Popper Development version -->
     <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.js"></script>
 
@@ -51,6 +50,12 @@
 
     <!-- @TODO: JS 파일에 대한 script테그를 완성하십시오 -->
     <script src="/js/functions.js"></script>
+
+    <% if (loggedIn && page === 'discussion-details') { %>
+    <script src="/js/comments.js"></script>
+    <% } %> <% if (page === 'edit-user') { %>
+    <script src="/js/profileImgEdit.js"></script>
+    <% } %>
   </body>
 
   <!--

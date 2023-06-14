@@ -150,6 +150,7 @@ router.get("/about", pagesController.showAbout); // 코스 페이지 위한 라�
 router.get("/users/login", usersController.login); // 로그인 폼을 보기 위한 요청 처리
 router.post(
   "/users/login",
+  usersController.validate, // strips . from email (used in `create` so necessary in `login` too)
   usersController.authenticate,
   usersController.redirectView
 ); // 로그인 폼에서 받아온 데이터의 처리와 결과를 사용자 보기 페이지에 보여주기
@@ -166,7 +167,7 @@ router.get("/users", usersController.index, usersController.indexView); // index
 router.get("/users/new", usersController.new); // 생성 폼을 보기 위한 요청 처리
 router.post(
   "/users/create",
-  usersController.validate, // Listing 23.6 (p. 344) - 사용자 생성 라우트에 유효성 체크 미들웨어 추가
+  usersController.validate, // strips . from email
   usersController.create,
   usersController.redirectView
 ); // 생성 폼에서 받아온 데이터의 처리와 결과를 사용자 보기 페이지에 보여주기
@@ -214,28 +215,30 @@ router.delete(
   discussionsController.redirectView
 );
 
-// /**
-//  * Courses
-//  */
-// router.get("/courses", coursesController.index, coursesController.indexView); // index 라우트 생성
-// router.get("/courses/new", coursesController.new); // 생성 폼을 보기 위한 요청 처리
-// router.post(
-//   "/courses/create",
-//   coursesController.create,
-//   coursesController.redirectView
-// ); // 생성 폼에서 받아온 데이터의 처리와 결과를 사용자 보기 페이지에 보여주기
-// router.get("/courses/:id", coursesController.show, coursesController.showView);
-// router.get("/courses/:id/edit", coursesController.edit); // viewing을 처리하기 위한 라우트 추가
-// router.put(
-//   "/courses/:id/update",
-//   coursesController.update,
-//   coursesController.redirectView
-// ); // 편집 폼에서 받아온 데이터의 처리와 결과를 사용자 보기 페이지에 보여주기
-// router.delete(
-//   "/courses/:id/delete",
-//   coursesController.delete,
-//   coursesController.redirectView
-// );
+/**
+ * Comments
+ */
+router.post(
+  "/comments/create",
+  commentsController.create,
+  commentsController.redirectView
+); // 생성 폼에서 받아온 데이터의 처리와 결과를 사용자 보기 페이지에 보여주기
+router.get(
+  "/comments/:id",
+  commentsController.show,
+  commentsController.showView
+);
+router.get("/comments/:id/edit", commentsController.edit); // viewing을 처리하기 위한 라우트 추가
+router.put(
+  "/comments/:id/update",
+  commentsController.update,
+  commentsController.redirectView
+); // 편집 폼에서 받아온 데이터의 처리와 결과를 사용자 보기 페이지에 보여주기
+router.delete(
+  "/comments/:id/delete",
+  commentsController.delete,
+  commentsController.redirectView
+);
 
 /**
  * =====================================================================

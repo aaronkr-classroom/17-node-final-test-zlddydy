@@ -5,13 +5,11 @@ const mongoose = require("mongoose"),
   { Schema } = require("mongoose"),
   commentSchema = new Schema(
     {
-      title: {
-        type: String,
-        required: true,
-      },
       comment: {
         type: String,
       },
+      discussion: { type: mongoose.Schema.Types.ObjectId, ref: "Discussion" },
+      author: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
       upVotes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
       downVotes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     },

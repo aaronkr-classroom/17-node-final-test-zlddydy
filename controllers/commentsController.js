@@ -1,7 +1,17 @@
 // controllers/commentsController.js
 "use strict";
 
-const Comment = require("../models/Comment"); // 사용자 모델 요청
+const Comment = require("../models/Comment"),
+  Discussion = require("../models/Discussion"),
+  getCommentParams = (req) => {
+    return {
+      comment: req.body.comment,
+      author: req.user,
+      discussion: req.headers.referer.substring(
+        req.headers.referer.lastIndexOf("/") + 1
+      ),
+    };
+  };
 
 module.exports = {
   index: (req, res, next) => {
@@ -44,21 +54,22 @@ module.exports = {
 
   // 사용자를 데이터베이스에 저장하기 위한 create 액션 추가
   create: (req, res, next) => {
-    let commentParams = {
-      name: {
-        first: req.body.first,
-        last: req.body.last,
-      },
-      email: req.body.email,
-      username: req.body.username,
-      password: req.body.password,
-      profileImg: req.body.profileImg,
-    };
+    let commentParams = getCommentParams(req),
+      discussionId = req.headers.referer.substring(
+        req.headers.referer.lastIndexOf("/") + 1
+      );
     // 폼 파라미터로 사용자 생성
     Comment.create(commentParams)
       .then((comment) => {
-        res.locals.redirect = "/comments";
+        Discussion.findByIdAndUpdate(discussionId, {
+          $push: { comments: comment._id },
+        }).then((discussion) => {
+          console.log(discussion);
+        });
+
+        res.locals.redirect = `/discussions/${discussionId}`;
         res.locals.comment = comment;
+        console.log(comment);
         next();
       })
       .catch((error) => {
@@ -126,23 +137,16 @@ module.exports = {
 
   // update 액션 추가
   update: (req, res, next) => {
-    let commentId = req.params.id,
-      commentParams = {
-        name: {
-          first: req.body.first,
-          last: req.body.last,
-        },
-        email: req.body.email,
-        username: req.body.username,
-        password: req.body.password,
-        profileImg: req.body.profileImg,
-      }; // 요청으로부터 사용자 파라미터 취득
+    let commentId = getCommentParams(req),
+      discussionId = req.headers.referer.substring(
+        req.headers.referer.lastIndexOf("/") + 1
+      ); // 요청으로부터 사용자 파라미터 취득
 
     Comment.findByIdAndUpdate(commentId, {
       $set: commentParams,
     }) //ID로 사용자를 찾아 단일 명령으로 레코드를 수정하기 위한 findByIdAndUpdate의 사용
       .then((comment) => {
-        res.locals.redirect = `/comments/${commentId}`;
+        res.locals.redirect = `/discussions/${discussionId}`;
         res.locals.comment = comment;
         next(); // 지역 변수로서 응답하기 위해 사용자를 추가하고 다음 미들웨어 함수 호출
       })
@@ -157,15 +161,23 @@ module.exports = {
    * delete 액션의 추가
    */
   delete: (req, res, next) => {
-    let commentId = req.params.id;
+    let commentId = req.params.id,
+      discussionId = req.headers.referer.substring(
+        req.headers.referer.lastIndexOf("/") + 1
+      );
     Comment.findByIdAndRemove(commentId) // findByIdAndRemove 메소드를 이용한 사용자 삭제
       .then(() => {
-        res.locals.redirect = "/comments";
-        next();
-      })
-      .catch((error) => {
-        console.log(`Error deleting comment by ID: ${error.message}`);
-        next();
+        Discussion.findByIdAndUpdate(discussionId, {
+          $pull: { comments: commentId },
+        })
+          .then(() => {
+            res.locals.redirect = `/discussions/${discussionId}`;
+            next();
+          })
+          .catch((error) => {
+            console.log(`Error deleting comment by ID: ${error.message}`);
+            next();
+          });
       });
   },
 };

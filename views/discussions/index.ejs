@@ -29,6 +29,7 @@
               <footer>
                 <p>
                   <small>
+                    <% if (loggedIn) { %>
                     <a href="<%=`discussions/${discussion._id}/edit`%>">
                       ✏️ Edit
                     </a>
@@ -38,9 +39,9 @@
                       a
                       >🗑️ Delete</a
                     >
-                    Posted by
-                    <a href="<%= `/users/${discussion.author}` %>">
-                      <%= discussion.author %>
+                    <% } %> Posted by
+                    <a href="<%= `/users/${discussion.author._id}` %>">
+                      <%= discussion.author.fullName %>
                     </a>
                     on
                     <time datetime="<%= discussion.createdAt.toISOString() %>">
@@ -51,37 +52,11 @@
               </footer>
               <% //} %>
             </td>
-            <td><%= discussion.comments.length %></td>
+            <td><%= discussion.views %></td>
             <td><%= discussion.comments.length %></td>
             <td>
-              <% if (discussion.comments.length > 0) { %>
-              <p>
-                <a href="<%= `/discussions/${discussion._id}` %>">
-                  <%= discussion.comments[discussion.comments.length - 1].body
-                  %>
-                </a>
-              </p>
-              <p>
-                <small>
-                  by
-                  <a
-                    href="<%= `/users/${discussion.comments[discussion.comments.length - 1].author}` %>"
-                  >
-                    <%= discussion.comments[discussion.comments.length -
-                    1].author.fullName %>
-                  </a>
-                  on
-                  <time
-                    datetime="<%= discussion.comments[discussion.comments.length - 1].createdAt.toISOString() %>"
-                  >
-                    <%= discussion.comments[discussion.comments.length -
-                    1].createdAt.toLocaleDateString() %>
-                  </time>
-                </small>
-              </p>
-              <% } else { %>
-              <p>No comments yet.</p>
-              <% } %>
+              <% if (discussion.comments.length > 0) { %> <% } else { %> No
+              comments yet. <% } %>
             </td>
           </tr>
           <% }); %>

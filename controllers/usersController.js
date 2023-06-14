@@ -34,7 +34,7 @@ module.exports = {
     // 성공, 실패의 플래시 메시지를 설정하고 사용자의 인중 상태에 따라 리디렉션할 경로를 지정한다
     failureRedirect: "/users/login",
     failureFlash: "Failed to login.",
-    successRedirect: "/",
+    successReturnToOrRedirect: "/",
     successFlash: "Logged in!",
   }), // passport의 authenticate 메소드를 사용해 사용자 인증
 
@@ -131,6 +131,8 @@ module.exports = {
    */
   index: (req, res, next) => {
     User.find() // index 액션에서만 퀴리 실행
+      .populate("discussions") // 사용자의 토론을 가져오기 위해 populate 메소드 사용
+      .exec()
       .then((users) => {
         // 사용자 배열로 index 페이지 렌더링
         res.locals.users = users; // 응답상에서 사용자 데이터를 저장하고 다음 미들웨어 함수 호출

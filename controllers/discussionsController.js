@@ -60,6 +60,8 @@ module.exports = {
    */
   index: (req, res, next) => {
     Discussion.find() // index 액션에서만 퀴리 실행
+      .populate("author") // 사용자의 토론을 가져오기 위해 populate 메소드 사용
+      .exec()
       .then((discussions) => {
         // 사용자 배열로 index 페이지 렌더링
         res.locals.discussions = discussions; // 응답상에서 사용자 데이터를 저장하고 다음 미들웨어 함수 호출
@@ -88,7 +90,10 @@ module.exports = {
     let discussionId = req.params.id; // request params로부터 사용자 ID 수집
     Discussion.findById(discussionId) // ID로 사용자 찾기
       .populate("author")
+      .populate("comments") // 댓글을 가져오기 위해 populate 메소드 사용
       .then((discussion) => {
+        discussion.views++;
+        discussion.save();
         res.locals.discussion = discussion; // 응답 객체를 통해 다음 믿들웨어 함수로 사용자 전달
         next();
       })
@@ -114,6 +119,7 @@ module.exports = {
     let discussionId = req.params.id;
     Discussion.findById(discussionId) // ID로 데이터베이스에서 사용자를 찾기 위한 findById 사용
       .populate("author")
+      .populate("comments")
       .then((discussion) => {
         res.render("discussions/edit", {
           discussion: discussion,
