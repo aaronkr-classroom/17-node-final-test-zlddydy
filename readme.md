@@ -1,10 +1,122 @@
 # Final Test / 기말고사
 
-Add CRUD Methods to the Express Server. Express 서버에 CRUD 메소드 추가하기.
+Add CRUD Methods to the Express Server.<br>Express 서버에 CRUD 메소드 추가하기.
 
-We are building a Forum website for the final test. 기말고사를 위해 포럼 웹사이트를 만들고 있습니다.
-Starter code is provided. 스타터 코드가 제공됩니다.
-Your task is to write the CRUD actions for each of the models. 각 모델에 대한 CRUD 액션을 작성하는 것이 과제입니다.
+This is an example of a _simple_ forum website. But there's one problem. The `discussionsController` is missing its CRUD methods. You need to add them.<br>이것은 _간단한_ 포럼 웹사이트의 예제입니다. 하지만 한가지 문제가 있습니다. `discussionsController`에 CRUD 메소드가 없습니다. 이것을 추가해야 합니다.
 
-Courses => Discussions
-Talks => Comments
+There are two files to change: `app.TODO.js` and `discussionsController.TODO.js`.<br>변경할 파일은 두개입니다: `app.TODO.js`와 `discussionsController.TODO.js` 입니다.
+
+## app.js
+
+In `app.js`, you need to add the following routes starting from line 197:<br>`app.js`에서 197번째 줄부터 다음의 라우트를 추가해야 합니다:
+
+|  #  | Method   | Path                      | 설명                | Controller actions   |
+| :-: | -------- | ------------------------- | ------------------- | -------------------- |
+|  1  | `GET`    | `/discussions`            | 모든 토론 목록      | index, indexView     |
+|  2  | `GET`    | `/discussions/new`        | 새로운 토론 폼 보기 | new                  |
+|  3  | `POST`   | `/discussions/create`     | 새로운 토론 생성    | create, redirectView |
+|  4  | `GET`    | `/discussions/:id`        | 단일 토론 보기      | show, showView       |
+|  5  | `GET`    | `/discussions/:id/edit`   | 토론 수정 폼 보기   | edit, editView       |
+|  6  | `PUT`    | `/discussions/:id/update` | 토론 업데이트       | update, redirectView |
+|  7  | `DELETE` | `/discussions/:id`        | 토론 삭제           | delete               |
+
+## discussionsController.js
+
+In the `discussionsController.js` file, you need to add the following actions. However, _SOME_ actions require a special line of code or two so that we can still add Comments. Any special code is shown below in the action's section:<br>`discussionsController.js` 파일에서 다음의 액션을 추가해야 합니다. 하지만, _일부_ 액션은 특별한 한 줄 또는 두 줄의 코드가 필요합니다. 이는 댓글을 추가할 수 있도록 하기 위함입니다. 특별한 코드는 아래의 액션 섹션에서 보여집니다:
+
+1. `new` 액션
+2. `create` 액션\*
+3. `redirectView` 액션
+4. `index` 액션\*
+5. `indexView` 액션
+6. `show` 액션\*
+7. `showView` 액션
+8. `edit` 액션\*
+9. `update` 액션\*
+10. `delete` 액션
+
+### \*create: 액션,
+
+Use `let discussionParams = getDiscussionParams(req.body, req.user);` to get both the Discussion parameters and the User ID.<br>`let discussionParams = getDiscussionParams(req.body, req.user);`를 사용하여 토론 파라미터와 사용자 ID를 얻으세요.
+
+Everything else will be like normal (as we studied in the book or in class).<br>나머지는 일반적인 것과 같을 것입니다 (책이나 수업에서 배운 것과 같습니다).
+
+```javascript
+let discussionParams = getDiscussionParams(req.body, req.user);
+```
+
+### \*index: 액션,
+
+After `Discussion.find()` but before `.then()`, add `.populate("author").exec()` so we can link Discussions with Users.<br>`Discussion.find()` 다음에 `.then()`을 추가하기 전에 `.populate("author").exec()`를 추가하여 토론과 사용자를 연결할 수 있도록 합니다.
+
+```javascript
+Discussion.find()
+  .populate("author")
+  .exec()
+  .then((discussions) => {
+    // ...
+  });
+```
+
+### \*show: 액션,
+
+After `Discussion.findById(req.params.id)` but before `.then()`, add `.populate("author").populate("comments")` so we can link Discussions with Users and Comments. <br>`Discussion.findById(req.params.id)` 다음에 `.then()`을 추가하기 전에 `.populate("author").populate("comments")`를 추가하여 토론과 사용자, 댓글을 연결할 수 있도록 합니다.
+
+Also, in `.then()`, increment `discussion.views++` and use `discussion.save()` to update the view count.<br>또한, `.then()`에서 `discussion.views++`를 증가시키고 `discussion.save()`를 사용하여 조회수를 업데이트하세요.
+
+```javascript
+Discussion.findById(req.params.id)
+  .populate("author")
+  .populate("comments")
+  .then((discussion) => {
+    discussion.views++;
+    discussion.save();
+    // ...
+  });
+```
+
+### \*edit: 액션,
+
+After `Discussion.findById(req.params.id)` but before `.then()`, add `.populate("author").populate("comments")` so we can link Discussions with Users and Comments. <br>`Discussion.findById(req.params.id)` 다음에 `.then()`을 추가하기 전에 `.populate("author").populate("comments")`를 추가하여 토론과 사용자, 댓글을 연결할 수 있도록 합니다.
+
+```javascript
+Discussion.findById(req.params.id)
+  .populate("author")
+  .populate("comments")
+  .then((discussion) => {
+    // ...
+  });
+```
+
+### \*update: 액션,
+
+Use `let discussionID = req.params.id;` and `let discussionParams = getDiscussionParams(req.body);` to get the Discussion parameters and ID. Then use `.populate("author")` before `.then()` to make sure the Discussion and User are linked.<br>`let discussionID = req.params.id;`와 `let discussionParams = getDiscussionParams(req.body);`를 사용하여 토론 파라미터와 ID를 얻으세요. 그런 다음 `.then()` 전에 `.populate("author")`를 사용하여 토론과 사용자가 연결되었는지 확인하세요.
+
+```javascript
+let discussionID = req.params.id,
+  discussionParams = getDiscussionParams(req.body);
+
+Discussion.findByIdAndUpdate(discussionID, {
+  $set: discussionParams,
+})
+  .populate("author")
+  .then((discussion) => {
+    // ...
+  });
+```
+
+## 실행
+
+As a final step, rename your 2 files to remove the `.TODO` from their filenames, and try to run your program.<br>마지막 단계로, 2개의 파일의 이름에서 `.TODO`를 제거하고 프로그램을 실행해 보세요.
+
+These are the things to check (what will be graded):<br>이것들을 확인하세요 (채점될 것입니다):
+
+1. `/discussions` 페이지에서 토론 목록을 볼 수 있어야 합니다.
+2. `/discussions/new` 페이지에서 새로운 토론을 만들 수 있어야 합니다.
+3. 새로운 토론을 만들 수 있어야 합니다.
+4. `/discussions/:id` 페이지에서 단일 토론을 볼 수 있어야 합니다.
+5. `/discussions/:id/edit` 페이지에서 토론을 수정할 수 있어야 합니다.
+6. 토론을 수정할 수 있어야 합니다.
+7. 토론을 삭제할 수 있어야 합니다.
+
+Just for fun, you can also try to add Comments to your Discussions. Do the Comments work?<br>재미로, 토론에 댓글을 추가해 보세요. 댓글이 작동하나요?

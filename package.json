@@ -1,7 +1,7 @@
 {
-  "name": "5-user-auth",
+  "name": "final-test",
   "version": "1.0.0",
-  "description": "A website using Express",
+  "description": "Adding CRUD operations to a forum site",
   "main": "app.js",
   "scripts": {
     "test": "jest",
