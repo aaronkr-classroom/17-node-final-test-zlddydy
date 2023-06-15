@@ -120,3 +120,7 @@ These are the things to check (what will be graded):<br>이것들을 확인하�
 7. 토론을 삭제할 수 있어야 합니다.
 
 Just for fun, you can also try to add Comments to your Discussions. Do the Comments work?<br>재미로, 토론에 댓글을 추가해 보세요. 댓글이 작동하나요?
+
+## Final Note
+
+If there are any mistakes in the code from me, you will not be penalized for them. Just do your best to solve the problem.<br>제가 작성한 코드에 오류가 있다면, 이로 인해 벌점을 받지 않습니다. 문제를 해결하기 위해 최선을 다하세요.
