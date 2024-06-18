@@ -31,9 +31,9 @@ In `app.js`, you need to add the following routes starting from line 197:<br>`ap
 |  2  | `GET`    | `/discussions/new`        | 새로운 토론 폼 보기 | new                  |
 |  3  | `POST`   | `/discussions/create`     | 새로운 토론 생성    | create, redirectView |
 |  4  | `GET`    | `/discussions/:id`        | 단일 토론 보기      | show, showView       |
-|  5  | `GET`    | `/discussions/:id/edit`   | 토론 수정 폼 보기   | edit, editView       |
+|  5  | `GET`    | `/discussions/:id/edit`   | 토론 수정 폼 보기   | edit                 |
 |  6  | `PUT`    | `/discussions/:id/update` | 토론 업데이트       | update, redirectView |
-|  7  | `DELETE` | `/discussions/:id`        | 토론 삭제           | delete               |
+|  7  | `DELETE` | `/discussions/:id`        | 토론 삭제           | delete, redirectView |
 
 ### discussionsController.js
 
