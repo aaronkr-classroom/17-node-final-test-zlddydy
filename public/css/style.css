@@ -70,7 +70,7 @@ header {
 
 .container {
   max-width: 980px; /* Aaron */
-  height: 72px; /* Aaron */
+  /* height: 72px; /* Aaron - DELETE - makes the page cut off */
   margin: auto;
 }
 
