@@ -1,12 +1,27 @@
 # Final Test / 기말고사
 
+## 목적:
+
 Add CRUD Methods to the Express Server.<br>Express 서버에 CRUD 메소드 추가하기.
+
+## 단계:
+
+1. 이전 개인 코드 저장소에서 개인 MongoDB 링크를 가지고오고 `app.js`에서 있는 링크를 덮어써세요.
+2. 아래 있는 `Discussions` (`포럼`) 코드를 작성하세요.
+3. `npm install` 실행하세요.
+4. `npm start` 실행하세요.
+5. 웹사이트에서 새로운 사용자가 등록하세요.
+6. 로그인하고 `포럼` 페이지에서 새로운 `Discussion` 만들어 보세요.
+7. 새로 만든 `Discussion`에서 `Comment` 여러 번 작성하세요.
+8. 모든 기능이 가능하면 **성공!** 제출하고 좋은 여름 방학보내세요~~
+
+## 설명:
 
 This is an example of a _simple_ forum website. But there's one problem. The `discussionsController` is missing its CRUD methods. You need to add them.<br>이것은 _간단한_ 포럼 웹사이트의 예제입니다. 하지만 한가지 문제가 있습니다. `discussionsController`에 CRUD 메소드가 없습니다. 이것을 추가해야 합니다.
 
 There are two files to change: `app.TODO.js` and `discussionsController.TODO.js`.<br>변경할 파일은 두개입니다: `app.TODO.js`와 `discussionsController.TODO.js` 입니다.
 
-## app.js
+### app.js
 
 In `app.js`, you need to add the following routes starting from line 197:<br>`app.js`에서 197번째 줄부터 다음의 라우트를 추가해야 합니다:
 
@@ -20,7 +35,7 @@ In `app.js`, you need to add the following routes starting from line 197:<br>`ap
 |  6  | `PUT`    | `/discussions/:id/update` | 토론 업데이트       | update, redirectView |
 |  7  | `DELETE` | `/discussions/:id`        | 토론 삭제           | delete               |
 
-## discussionsController.js
+### discussionsController.js
 
 In the `discussionsController.js` file, you need to add the following actions. However, _SOME_ actions require a special line of code or two so that we can still add Comments. Any special code is shown below in the action's section:<br>`discussionsController.js` 파일에서 다음의 액션을 추가해야 합니다. 하지만, _일부_ 액션은 특별한 한 줄 또는 두 줄의 코드가 필요합니다. 이는 댓글을 추가할 수 있도록 하기 위함입니다. 특별한 코드는 아래의 액션 섹션에서 보여집니다:
 
@@ -35,7 +50,7 @@ In the `discussionsController.js` file, you need to add the following actions. H
 9. `update` 액션\*
 10. `delete` 액션
 
-### \*create: 액션,
+#### \*create: 액션,
 
 Use `let discussionParams = getDiscussionParams(req.body, req.user);` to get both the Discussion parameters and the User ID.<br>`let discussionParams = getDiscussionParams(req.body, req.user);`를 사용하여 토론 파라미터와 사용자 ID를 얻으세요.
 
@@ -45,7 +60,7 @@ Everything else will be like normal (as we studied in the book or in class).<br>
 let discussionParams = getDiscussionParams(req.body, req.user);
 ```
 
-### \*index: 액션,
+#### \*index: 액션,
 
 After `Discussion.find()` but before `.then()`, add `.populate("author").exec()` so we can link Discussions with Users.<br>`Discussion.find()` 다음에 `.then()`을 추가하기 전에 `.populate("author").exec()`를 추가하여 토론과 사용자를 연결할 수 있도록 합니다.
 
@@ -58,7 +73,7 @@ Discussion.find()
   });
 ```
 
-### \*show: 액션,
+#### \*show: 액션,
 
 After `Discussion.findById(req.params.id)` but before `.then()`, add `.populate("author").populate("comments")` so we can link Discussions with Users and Comments. <br>`Discussion.findById(req.params.id)` 다음에 `.then()`을 추가하기 전에 `.populate("author").populate("comments")`를 추가하여 토론과 사용자, 댓글을 연결할 수 있도록 합니다.
 
@@ -75,7 +90,7 @@ Discussion.findById(req.params.id)
   });
 ```
 
-### \*edit: 액션,
+#### \*edit: 액션,
 
 After `Discussion.findById(req.params.id)` but before `.then()`, add `.populate("author").populate("comments")` so we can link Discussions with Users and Comments. <br>`Discussion.findById(req.params.id)` 다음에 `.then()`을 추가하기 전에 `.populate("author").populate("comments")`를 추가하여 토론과 사용자, 댓글을 연결할 수 있도록 합니다.
 
@@ -88,7 +103,7 @@ Discussion.findById(req.params.id)
   });
 ```
 
-### \*update: 액션,
+#### \*update: 액션,
 
 Use `let discussionID = req.params.id;` and `let discussionParams = getDiscussionParams(req.body);` to get the Discussion parameters and ID. Then use `.populate("author")` before `.then()` to make sure the Discussion and User are linked.<br>`let discussionID = req.params.id;`와 `let discussionParams = getDiscussionParams(req.body);`를 사용하여 토론 파라미터와 ID를 얻으세요. 그런 다음 `.then()` 전에 `.populate("author")`를 사용하여 토론과 사용자가 연결되었는지 확인하세요.
 
@@ -105,7 +120,7 @@ Discussion.findByIdAndUpdate(discussionID, {
   });
 ```
 
-## 실행
+### 실행
 
 As a final step, rename your 2 files to remove the `.TODO` from their filenames, and try to run your program.<br>마지막 단계로, 2개의 파일의 이름에서 `.TODO`를 제거하고 프로그램을 실행해 보세요.
 
@@ -121,6 +136,6 @@ These are the things to check (what will be graded):<br>이것들을 확인하�
 
 Just for fun, you can also try to add Comments to your Discussions. Do the Comments work?<br>재미로, 토론에 댓글을 추가해 보세요. 댓글이 작동하나요?
 
-## Final Note
+### Final Note
 
 If there are any mistakes in the code from me, you will not be penalized for them. Just do your best to solve the problem.<br>제가 작성한 코드에 오류가 있다면, 이로 인해 벌점을 받지 않습니다. 문제를 해결하기 위해 최선을 다하세요.
