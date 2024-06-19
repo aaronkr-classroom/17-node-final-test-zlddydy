@@ -4,6 +4,10 @@
 
 Add CRUD Methods to the Express Server.<br>Express 서버에 CRUD 메소드 추가하기.
 
+**Hint:** 
+
+Copy the required actions from `usersController.js` into `discussionsController.js`, and the `user` routes in `app.js`. Change all instances of `user` to `discussion` and maintain the correct spelling (`User` = `Discussion`, `users` = `discussions`, etc).<br>`usersController.js`의 필수 작업을 `discussionsController.js`에 복사하고 `user` 경로는 `app.js`에 복사합니다. 모든 `user` 인스턴스를 `discussion`으로 변경하고 올바른 철자를 유지합니다(`User` = `Discussion`, `users` = `discussions` 등).
+
 ## 단계:
 
 1. 이전 개인 코드 저장소에서 개인 MongoDB 링크를 가지고오고 `app.js`에서 있는 링크를 덮어써세요.
