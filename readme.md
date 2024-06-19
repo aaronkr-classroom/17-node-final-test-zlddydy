@@ -54,10 +54,24 @@ In the `discussionsController.js` file, you need to add the following actions. H
 
 Use `let discussionParams = getDiscussionParams(req.body, req.user);` to get both the Discussion parameters and the User ID.<br>`let discussionParams = getDiscussionParams(req.body, req.user);`를 사용하여 토론 파라미터와 사용자 ID를 얻으세요.
 
-Everything else will be like normal (as we studied in the book or in class).<br>나머지는 일반적인 것과 같을 것입니다 (책이나 수업에서 배운 것과 같습니다).
-
 ```javascript
 let discussionParams = getDiscussionParams(req.body, req.user);
+```
+
+Also, in the `create` action, **DO NOT** use `Discussion.register(...)` - rather use `Discussion.create(...)`. `register()` is for user registration using `passport`, `create()` is a Mongoose method for creating a new Object in the MongoDB database.<br>또한 `create` 작업에서 `Discussion.register(...)`를 **사용하지 마세요** - 오히려 `Discussion.create(...)`를 사용하세요. `register()`는 `passport`를 사용하여 사용자를 등록하기 위한 것이고, `create()`는 MongoDB 데이터베이스에 새 객체를 생성하기 위한 Mongoose 메서드입니다.
+
+```javascript
+// 폼 파라미터로 사용자 생성
+  Discussion.create(discussionParams)
+    .then((discussion) => {
+      // res.locals.redirect = ...
+      // res.locals.discussion = ...
+      // next();
+    })
+    .catch((error) => {
+      // console.log(...);
+      // next(error);
+    });
 ```
 
 #### \*index: 액션,
